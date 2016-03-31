@@ -1,10 +1,7 @@
 
-
-
 <%@page import="java.util.Set"%>
 <%@page import="instagram.InstaLoader"%>
 <%@page import="instagram.GeoLocator"%>
-<%@page import="instagram.JsonLoader"%>
 <%@page import="com.fasterxml.jackson.databind.JsonNode"%>
 <%@page import="org.codehaus.jackson.map.ObjectMapper"%>
 <%@page import="java.util.Map"%>
@@ -77,6 +74,11 @@
     <!-- /.container -->
 </nav>
 <div id="instafeed"></div>
+    <form action="LoadPhotos" method="post"> 
+        <br/>Zip code:<input type="text" name="location"> 
+        <br/><input type="submit" value="Submit"> 
+    </form> 
+</form>
 
         <%
             out.println(test);
@@ -92,14 +94,6 @@
              * UserName which needs to be a String
              ******************************************/
             InstaLoader insta = new InstaLoader(458131440);
-
-            List<Map<String, String>> kk = insta.createMap();
-            GeoLocator geo = new GeoLocator("234 e 450 s provo, ut 84660 ");
-            out.println(geo.getAddress());
-            // Test will display ALL photos from URL link
-            for (int i = 0; i < kk.size();i++){              
-                out.println("<img src='" + kk.get(i).get("url") + "'>" + "<br>"); 
-            }
         %>
  
     </div>

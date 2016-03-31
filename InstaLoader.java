@@ -25,16 +25,8 @@ public final class InstaLoader extends JsonCoder {
     private Map<String,String> out;
     private String url = null;
     Iterator<String> keyss = null;
-    private static final String URL_USER = "https://www.instagram.com/%s/media/";
     private static final String URL_ID = "https://api.instagram.com/v1/users/%s/media/recent/";
-    private static final String KEY = "?client_id=cb8f2beb45ae42958d3105c17edc95b9&access_token=3023452426.cb8f2be.ce6db1e84e604242a3c8ed9dfc6d2264";
-    
-    // Constructor for username
-    public InstaLoader(String username) throws IOException {
-        this.out = null;
-        url = String.format(URL_USER, username);
-        createMap();
-    }
+    private static final String KEY = "?client_id=cb8f2beb45ae42958d3105c17edc95b9&access_token=3023452426.cb8f2be.ce6db1e84e604242a3c8ed9dfc6d2264&count=-1";
     
     // Constructor for userid
     public InstaLoader(int userid) throws IOException {
@@ -42,11 +34,10 @@ public final class InstaLoader extends JsonCoder {
         url = String.format(URL_ID, userid) + KEY;
         createMap();
     }
-    
     // Calls parse to create a map
-    public List<Map<String, String>> createMap () throws IOException {
+    public void createMap () throws IOException {
         JSONObject json = super.getUrl(url);
-
+        
         JSONArray myArray = null;
         if (json.has("data"))
             myArray = (JSONArray) json.getJSONArray("data");
@@ -59,11 +50,8 @@ public final class InstaLoader extends JsonCoder {
             for (int i = 0; i < myArray.length(); i++) {
                 out = new HashMap<>();
                 myMapList.add( parse( (JSONObject)myArray.get(i),out) );   
-                //mappy = parse( (JSONObject)myArray.get(i),out);
-                //myMapList.add(mappy);
             }
        }
-        return myMapList;
     }
     // Get each item from the map
     public String getItem(String item){
@@ -81,7 +69,7 @@ public final class InstaLoader extends JsonCoder {
     // Creates a map of the Instagram Json object
     public Map<String,String> parse(JSONObject json , Map<String,String> out) throws JSONException{
     Iterator<String> keys = json.keys();
-    
+
     while(keys.hasNext()){
         String key = keys.next();
         String val = null;        
